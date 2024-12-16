@@ -10,3 +10,12 @@ services:
       - ./Ejercicio1:/app  # Monta la carpeta Ejercicio1 en el contenedor
     working_dir: /app
     command: ["pytest", "--cov=src", "--cov-report=term"]
+  ejercicio2:
+    build:
+      context: ./Ejercicio2 # Apunta a la carpeta Ejercicio2
+      dockerfile: Dockerfile # Usa el Dockerfile dentro de Ejercicio2
+    container_name: ejercicio2_tests
+    volumes:
+      - ./Ejercicio2:/app  # Monta la carpeta Ejercicio2 en el contenedor
+    working_dir: /app
+    command: ["pytest", "--cov=src", "--cov-report=term"]
