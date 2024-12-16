@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  ejercicio1:
+    build:
+      context: ./Ejercicio1  # Apunta a la carpeta Ejercicio1
+      dockerfile: Dockerfile # Usa el Dockerfile dentro de Ejercicio1
+    container_name: ejercicio1_tests
+    volumes:
+      - ./Ejercicio1:/app  # Monta la carpeta Ejercicio1 en el contenedor
+    working_dir: /app
+    command: ["pytest", "--cov=src", "--cov-report=term"]
