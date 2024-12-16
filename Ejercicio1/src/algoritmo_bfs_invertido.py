@@ -7,29 +7,26 @@ class BFSInvertido:
         self.heuristica = heuristica
 
     def buscar_ruta_optima(self, destino):
-        visitados = set()  # Conjunto para marcar nodos visitados
-        cola = [(0, destino)]  # Min-heap: (costo_acumulado, nodo_actual)
-        resultado = []
+        visitados = {}  # Diccionario para almacenar el menor costo a cada nodo
+        cola = []
+        heapq.heappush(cola, (0, destino))  # (costo acumulado, nodo)
+        rutas = []
 
         while cola:
             costo, nodo_actual = heapq.heappop(cola)
 
-            # Si el nodo ya fue visitado con menor costo, lo ignoramos
-            if nodo_actual in visitados:
+            # Si el nodo ya fue visitado con un menor costo, se ignora
+            if nodo_actual in visitados and visitados[nodo_actual] <= costo:
                 continue
 
-            # Marcar el nodo como visitado
-            visitados.add(nodo_actual)
+            visitados[nodo_actual] = costo
 
-            # Ignorar el nodo destino en el resultado
-            if nodo_actual != destino:
-                resultado.append((nodo_actual, costo))
+            # Evitar incluir el nodo destino en los resultados
+            if nodo_actual != destino and self.heuristica.verificar_carga(nodo_actual, costo):
+                rutas.append((nodo_actual, costo))
 
-            # Explorar vecinos hacia atrás en el grafo
+            # Agrega los vecinos a la cola
             for vecino, peso in self.grafo.get(nodo_actual, []):
-                nuevo_costo = costo + peso
-                if vecino not in visitados and self.heuristica.verificar_carga(vecino, nuevo_costo):
-                    heapq.heappush(cola, (nuevo_costo, vecino))
+                heapq.heappush(cola, (costo + peso, vecino))
 
-        # Ordenar resultados por costo acumulado
-        return sorted(resultado, key=lambda x: x[1])
+        return sorted(rutas, key=lambda x: x[1])  # Ordena por costo acumulado
