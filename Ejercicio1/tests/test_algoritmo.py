@@ -19,4 +19,4 @@ def test_buscar_ruta_optima(grafo_mock):
     bfs = BFSInvertido(grafo_mock, heuristica_mock)
     resultado = bfs.buscar_ruta_optima("D")
 
-    assert resultado == [("C", 1), ("A", 3)]
+    assert resultado == [("C", 1), ("A", 3), ("B", 3)]
